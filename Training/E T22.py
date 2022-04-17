@@ -3,7 +3,6 @@
 n, m, k = map(int, input().split())
 planes = []
 clouds = []
-counter = -1
 pairs = 0
 for c in range(n):
     x, y = map(int, input().split())
@@ -13,44 +12,51 @@ for c in range(m):
     clouds.append([x,y])
 
 print(planes)
+print(clouds)
 
 for i in range(k):
+    counter = -1
     for i in planes:
         counter += 1
-        if i == None:
-            break
         if i[2] == 'E':
             ii = [i[0] + 1, i[1]]
             if ii in clouds:
-                planes[counter][2] = 'S'
+                ii = [i[0], i[1] - 1]
+                ii.append('S')
+                planes[counter] = ii
             else:
-                planes[counter] = ii.append('E')
-        if i[2] == 'S':
+                ii.append('E')
+                planes[counter] = ii
+        elif i[2] == 'S':
             ii = [i[0], i[1] - 1]
             if ii in clouds:
-                planes[counter][2] = 'O'
+                ii = [i[0] - 1, i[1]]
+                ii.append('O')
+                planes[counter] = ii
             else:
-                planes[counter] = ii.append('S')
-        if i[2] == 'O':
+                ii.append('S')
+                planes[counter] = ii
+        elif i[2] == 'O':
             ii = [i[0] - 1, i[1]]
             if ii in clouds:
-                planes[counter][2] = 'N'
+                ii = [i[0], i[1] + 1]
+                ii.append('N')
+                planes[counter] = ii
             else:
-                planes[counter] = ii.append('O')
-        if i[2] == 'N':
+                ii.append('O')
+                planes[counter] = ii
+        elif i[2] == 'N':
             ii = [i[0], i[1] + 1]
             if ii in clouds:
-                planes[counter][2] = 'E'
                 ii = [i[0] + 1, i[1]]
-                if ii in clouds:
-                    planes[counter][2] = 'S'
-                else:
-                    planes[counter] = ii.append('E')
+                ii.append('E')
+                planes[counter] = ii
             else:
-                planes[counter] = ii.append('N')
-    for i in planes:
-        if planes.count(i) > 1:
-            pairs += planes.count(i)//2
+                ii.append('N')
+                planes[counter] = ii
+for i in planes:
+    if planes.count(i) > 1:
+        pairs += planes.count(i)//2
 
 print(pairs)
 
