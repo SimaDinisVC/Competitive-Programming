@@ -1,63 +1,58 @@
 # THIS CODE IS AN EXPERIMENT AND IT IS NOT ALREADY
+def add(planes, pairs):
+    coord = []
+    for i in planes:
+        coord.append(list([planes[i][0], planes[i][1]]))
+    for i in coord:
+        if coord.count(i)>1:
+            indexs = list([o+1 for o, item in enumerate(coord) if item == i])
+            print(indexs)
+            for o in indexs:
+                    for l in indexs:
+                        if (o,l) not in pairs and (l,o) not in pairs and (o,o) not in pairs and (l,l) not in pairs:
+                            pairs.append((o,l))
+            print(pairs)
+            indexs.clear()
+    return pairs   
 
 n, m, k = map(int, input().split())
-planes = []
+planes = {}
 clouds = []
-pairs = 0
+pairs = []
 for c in range(n):
     x, y = map(int, input().split())
-    planes.append([x,y,'E'])
+    planes[len(planes)+1] = [x,y,'E']
 for c in range(m):
     x, y = map(int, input().split())
     clouds.append([x,y])
 
-print(planes)
-print(clouds)
-
 for i in range(k):
-    counter = -1
-    for i in planes:
-        counter += 1
-        if i[2] == 'E':
-            ii = [i[0] + 1, i[1]]
-            if ii in clouds:
-                ii = [i[0], i[1] - 1]
-                ii.append('S')
-                planes[counter] = ii
+    for key in planes:
+        facing = planes[key][2]
+        if facing == 'E':
+            if list([planes[key][0]+1,planes[key][1]]) in clouds:
+                planes[key][2] = 'S'
             else:
-                ii.append('E')
-                planes[counter] = ii
-        elif i[2] == 'S':
-            ii = [i[0], i[1] - 1]
-            if ii in clouds:
-                ii = [i[0] - 1, i[1]]
-                ii.append('O')
-                planes[counter] = ii
+                planes[key][0] += 1
+            pairs = add(planes,pairs)
+        elif facing == 'S':
+            if list([planes[key][0],planes[key][1]-1]) in clouds:
+                planes[key][2] = 'O'
             else:
-                ii.append('S')
-                planes[counter] = ii
-        elif i[2] == 'O':
-            ii = [i[0] - 1, i[1]]
-            if ii in clouds:
-                ii = [i[0], i[1] + 1]
-                ii.append('N')
-                planes[counter] = ii
+                planes[key][1] -= 1
+            pairs = add(planes,pairs)
+        elif facing == 'O':
+            if list([planes[key][0]-1,planes[key][1]]) in clouds:
+                planes[key][2] = 'S'
             else:
-                ii.append('O')
-                planes[counter] = ii
-        elif i[2] == 'N':
-            ii = [i[0], i[1] + 1]
-            if ii in clouds:
-                ii = [i[0] + 1, i[1]]
-                ii.append('E')
-                planes[counter] = ii
+                planes[key][0] -= 1
+            pairs = add(planes,pairs)
+        elif facing == 'N':
+            if list([planes[key][0],planes[key][1]+1]) in clouds:
+                planes[key][2] = 'S'
             else:
-                ii.append('N')
-                planes[counter] = ii
-for i in planes:
-    if planes.count(i) > 1:
-        pairs += planes.count(i)//2
-
-print(pairs)
+                planes[key][1] += 1
+            pairs = add(planes,pairs)
+print(len(pairs))
 
 # THIS CODE IS AN EXPERIMENT AND IT IS NOT ALREADY
