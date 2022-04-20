@@ -13,7 +13,7 @@ def add(planes, pairs):
                             pairs.append((o,l))
             print(pairs)
             indexs.clear()
-    return pairs   
+    return pairs
 
 n, m, k = map(int, input().split())
 planes = {}
